@@ -1,11 +1,18 @@
 package com.library.service.system.clients;
 
 import com.library.service.system.clients.dto.UserDTO;
+import com.library.service.system.service.UserFallbackService;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "user-service", url = "http://host.docker.internal:8081/users/")
+@FeignClient(name = "${feign.user.name}", url = "${feign.user.url}",
+        fallback = UserFallbackService.class)
 public interface UserClient {
     @GetMapping("/")
     ResponseEntity<Result> getAllUsers();
