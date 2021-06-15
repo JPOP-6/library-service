@@ -8,6 +8,8 @@ import com.library.service.system.clients.dto.UserDTO;
 import com.library.service.system.model.dto.Profile;
 import com.library.service.system.resource.api.LibraryResource;
 import com.library.service.system.service.LibraryService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
+@Slf4j
 public class LibraryResourceImpl implements LibraryResource {
     private final BookClient bookClient;
     private final UserClient userClient;
@@ -35,8 +38,17 @@ public class LibraryResourceImpl implements LibraryResource {
     }
 
     @Override
+    @HystrixCommand(fallbackMethod = "getAllBooksFallback")
     public ResponseEntity<Result<BookDTO>> getAllBooks() {
         return bookClient.getAllBooks();
+    }
+
+    public ResponseEntity<Result<BookDTO>> getAllBooksFallback() {
+        log.debug("Fallback called for getAllBooks");
+        Result<BookDTO> bookDTOResult = new Result<>();
+        bookDTOResult.setSuccess(false);
+        bookDTOResult.setError("Server is down");
+        return ResponseEntity.ok().body(bookDTOResult);
     }
 
     @Override
