@@ -15,7 +15,7 @@ public interface LibraryResource<T extends BaseDTO> {
     ResponseEntity<Result<T>> getAllBooks();
 
     @GetMapping("/books/{book_id}")
-    ResponseEntity<Result<T>> getBookDetails(@PathVariable("book_id") int bookId);
+    ResponseEntity<Result<T>> getBookDetails(@PathVariable("book_id") String bookId);
 
     @GetMapping("/users")
     ResponseEntity<Result<T>> getAllUsers();
@@ -32,9 +32,9 @@ public interface LibraryResource<T extends BaseDTO> {
 
     @PostMapping("/users/{user_id}/books/{book_id}")
     ResponseEntity<Result<T>> issueBookToUser(@PathVariable("user_id") int userId,
-                                           @PathVariable("book_id") int bookId);
+                                           @PathVariable("book_id") String bookId);
 
     @DeleteMapping("/users/{user_id}/books/{book_id}")
     ResponseEntity<Result<T>> releaseBookForUserId(@PathVariable("user_id") int userId,
-                                                @PathVariable("book_id") int bookId);
+                                                @PathVariable("book_id") String bookId);
 }

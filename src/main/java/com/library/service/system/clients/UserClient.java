@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "${feign.user.name}", url = "${feign.user.url}",
         fallback = UserFallbackService.class)
 public interface UserClient {
-    @GetMapping("/")
-    ResponseEntity<Result> getAllUsers();
+    @GetMapping(value = "/", produces = "application/json", consumes = "application/json")
+    ResponseEntity<UserResult> getAllUsers();
 
-    @GetMapping("/{id}")
-    ResponseEntity<Result> getUserById(@PathVariable("id") int id);
+    @GetMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
+    ResponseEntity<UserResult> getUserById(@PathVariable("id") int id);
 
-    @PostMapping("/")
-    ResponseEntity<Result> addUser(@RequestBody UserDTO userDTO);
+    @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
+    ResponseEntity<UserResult> addUser(@RequestBody UserDTO userDTO);
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<Result> deleteUser(@PathVariable("id") int id);
+    @DeleteMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
+    ResponseEntity<UserResult> deleteUser(@PathVariable("id") int id);
 
-    @PutMapping("/{id}")
-    ResponseEntity<Result> updateUser(@PathVariable("id") int id, @RequestBody UserDTO userDTO);
+    @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
+    ResponseEntity<UserResult> updateUser(@PathVariable("id") int id, @RequestBody UserDTO userDTO);
 
 }

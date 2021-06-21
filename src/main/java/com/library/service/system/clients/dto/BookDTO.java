@@ -9,7 +9,8 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @FieldNameConstants
-public class BookDTO extends BaseDTO{
+public class BookDTO extends BaseDTO {
+    private String id;
     private String title;
     private String category;
     private BigDecimal price;

@@ -19,6 +19,6 @@ public class Library {
     private int userId;
 
     @Column(name = "BOOK_ID")
-    private int bookId;
+    private String bookId;
 
 }

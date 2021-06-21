@@ -10,5 +10,5 @@ import java.util.List;
 public interface LibraryRepository extends JpaRepository<Library, Integer> {
     List<Library> getByUserId(int userId);
 
-    Library getByUserIdAndBookId(int userId, int bookId);
+    Library getByUserIdAndBookId(int userId, String bookId);
 }

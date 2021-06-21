@@ -1,8 +1,6 @@
 package com.library.service.system.resource.impl;
 
-import com.library.service.system.clients.BookClient;
-import com.library.service.system.clients.Result;
-import com.library.service.system.clients.UserClient;
+import com.library.service.system.clients.*;
 import com.library.service.system.clients.dto.BookDTO;
 import com.library.service.system.clients.dto.UserDTO;
 import com.library.service.system.model.dto.Profile;
@@ -33,43 +31,43 @@ public class LibraryResourceImpl implements LibraryResource {
     }
 
     @Override
-    public ResponseEntity<Result> login(int userId) {
+    public ResponseEntity<UserResult> login(int userId) {
         return userClient.getUserById(userId);
     }
 
     @Override
     @HystrixCommand(fallbackMethod = "getAllBooksFallback")
-    public ResponseEntity<Result<BookDTO>> getAllBooks() {
+    public ResponseEntity<BookResult> getAllBooks() {
         return bookClient.getAllBooks();
     }
 
-    public ResponseEntity<Result<BookDTO>> getAllBooksFallback() {
+    public ResponseEntity<BookResult> getAllBooksFallback() {
         log.debug("Fallback called for getAllBooks");
-        Result<BookDTO> bookDTOResult = new Result<>();
+        BookResult bookDTOResult = new BookResult();
         bookDTOResult.setSuccess(false);
         bookDTOResult.setError("Server is down");
         return ResponseEntity.ok().body(bookDTOResult);
     }
 
     @Override
-    public ResponseEntity<Result<BookDTO>> getBookDetails(int bookId) {
+    public ResponseEntity<BookResult> getBookDetails(String bookId) {
         return bookClient.getBookById(bookId);
     }
 
     @Override
-    public ResponseEntity<Result> getAllUsers() {
+    public ResponseEntity<UserResult> getAllUsers() {
         return userClient.getAllUsers();
     }
 
     @Override
     public ResponseEntity<Result> getAllBooksIssuedByTheUser(int userId) {
-        ResponseEntity<Result> result = userClient.getUserById(userId);
-        List<UserDTO> user = result.getBody().getData();
-        List<Integer> bookIds = libraryService.getAllBooksForUser(userId);
+        ResponseEntity<UserResult> result = userClient.getUserById(userId);
+        List<UserDTO> user = result.getBody().getUsers();
+        List<String> bookIds = libraryService.getAllBooksForUser(userId);
         List<BookDTO> books = bookIds.stream()
                 .map(bookClient::getBookById)
                 .map(HttpEntity::getBody).filter(Objects::nonNull)
-                .map(Result::getData)
+                .map(BookResult::getBooks)
                 .map(data -> data.get(0))
                 .collect(Collectors.toList());
         Result<Profile> finalResult = new Result<>();
@@ -81,23 +79,23 @@ public class LibraryResourceImpl implements LibraryResource {
     }
 
     @Override
-    public ResponseEntity<Result> addAUser(UserDTO userDTO) {
+    public ResponseEntity<UserResult> addAUser(UserDTO userDTO) {
         return userClient.addUser(userDTO);
     }
 
     @Override
-    public ResponseEntity<Result> updateUserAccountDetails(int userId, UserDTO userDTO) {
+    public ResponseEntity<UserResult> updateUserAccountDetails(int userId, UserDTO userDTO) {
         return userClient.updateUser(userId, userDTO);
     }
 
     @Override
-    public ResponseEntity<Result> issueBookToUser(int userId, int bookId) {
+    public ResponseEntity<Result> issueBookToUser(int userId, String bookId) {
         libraryService.issueBookToUser(userId, bookId);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Result> releaseBookForUserId(int userId, int bookId) {
+    public ResponseEntity<Result> releaseBookForUserId(int userId, String bookId) {
         libraryService.releaseBookFromUser(userId, bookId);
         return ResponseEntity.ok().build();
     }
