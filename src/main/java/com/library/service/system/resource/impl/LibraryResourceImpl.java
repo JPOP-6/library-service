@@ -1,12 +1,15 @@
 package com.library.service.system.resource.impl;
 
-import com.library.service.system.clients.*;
+import com.library.service.system.clients.BookClient;
+import com.library.service.system.clients.BookResult;
+import com.library.service.system.clients.Result;
+import com.library.service.system.clients.UserClient;
+import com.library.service.system.clients.UserResult;
 import com.library.service.system.clients.dto.BookDTO;
 import com.library.service.system.clients.dto.UserDTO;
 import com.library.service.system.model.dto.Profile;
 import com.library.service.system.resource.api.LibraryResource;
 import com.library.service.system.service.LibraryService;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -36,17 +39,8 @@ public class LibraryResourceImpl implements LibraryResource {
     }
 
     @Override
-    @HystrixCommand(fallbackMethod = "getAllBooksFallback")
     public ResponseEntity<BookResult> getAllBooks() {
         return bookClient.getAllBooks();
-    }
-
-    public ResponseEntity<BookResult> getAllBooksFallback() {
-        log.debug("Fallback called for getAllBooks");
-        BookResult bookDTOResult = new BookResult();
-        bookDTOResult.setSuccess(false);
-        bookDTOResult.setError("Server is down");
-        return ResponseEntity.ok().body(bookDTOResult);
     }
 
     @Override

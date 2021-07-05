@@ -1,5 +1,7 @@
 package com.library.service.system;
 
+import com.library.service.system.config.KafkaConsumerConfiguration;
+import com.library.service.system.kafkalistener.KafkaListener;
 import com.library.service.system.repositories.LibraryRepository;
 import com.library.service.system.service.BookFallbackService;
 import com.library.service.system.service.LibraryService;
@@ -22,7 +24,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Import(value = {
         LibraryService.class,
         BookFallbackService.class,
-        UserFallbackService.class
+        UserFallbackService.class,
+        KafkaConsumerConfiguration.class,
+        KafkaListener.class
 })
 @EnableDiscoveryClient
 @EnableFeignClients
