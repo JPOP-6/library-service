@@ -6,6 +6,5 @@ import lombok.experimental.FieldNameConstants;
 @Data
 @FieldNameConstants
 public class BaseDTO {
-    private int id;
 
 }

@@ -16,20 +16,20 @@ public class LibraryService {
         this.repository = repository;
     }
 
-    public List<Integer> getAllBooksForUser(int userId) {
+    public List<String> getAllBooksForUser(int userId) {
          return repository.getByUserId(userId).stream()
                  .map(Library::getBookId)
                  .collect(Collectors.toList());
     }
 
-    public Library issueBookToUser(int userId,int bookId) {
+    public Library issueBookToUser(int userId,String bookId) {
         Library library = new Library();
         library.setBookId(bookId);
         library.setUserId(userId);
         return repository.save(library);
     }
 
-    public void releaseBookFromUser(int userId, int bookId) {
+    public void releaseBookFromUser(int userId, String bookId) {
         Library library = repository.getByUserIdAndBookId(userId, bookId);
         repository.deleteById(library.getId());
     }

@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @FieldNameConstants
 public class UserDTO extends BaseDTO {
 
+    private int id;
+
     private String name;
 
     private String username;

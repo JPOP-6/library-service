@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "${feign.book.name}", url = "${feign.book.url}",
         fallback = BookFallbackService.class)
 public interface BookClient {
-    @GetMapping("/")
-    ResponseEntity<Result<BookDTO>> getAllBooks();
+    @GetMapping(value = "/", produces = "application/json", consumes = "application/json")
+    ResponseEntity<BookResult> getAllBooks();
 
-    @GetMapping("/{id}")
-    ResponseEntity<Result<BookDTO>> getBookById(@PathVariable("id") int id);
+    @GetMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
+    ResponseEntity<BookResult> getBookById(@PathVariable("id") String id);
 
-    @PostMapping("/")
-    ResponseEntity<Result<BookDTO>> addBook(@RequestBody BookDTO book);
+    @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
+    ResponseEntity<BookResult> addBook(@RequestBody BookDTO book);
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<Result<BookDTO>> deleteBook(@PathVariable("id") int id);
+    @DeleteMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
+    ResponseEntity<BookResult> deleteBook(@PathVariable("id") String id);
 
-    @PutMapping("/{id}")
-    ResponseEntity<Result<BookDTO>> updateBook(@PathVariable("id") int id, @RequestBody BookDTO bookDTO);
+    @PutMapping(value = "/{id}", produces = "application/json", consumes = "application/json")
+    ResponseEntity<BookResult> updateBook(@PathVariable("id") String id, @RequestBody BookDTO bookDTO);
 
 }

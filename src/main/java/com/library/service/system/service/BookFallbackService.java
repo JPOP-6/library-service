@@ -1,7 +1,7 @@
 package com.library.service.system.service;
 
 import com.library.service.system.clients.BookClient;
-import com.library.service.system.clients.Result;
+import com.library.service.system.clients.BookResult;
 import com.library.service.system.clients.dto.BookDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,34 +13,34 @@ import org.springframework.stereotype.Component;
 public class BookFallbackService implements BookClient {
 
     @Override
-    public ResponseEntity<Result<BookDTO>> getAllBooks() {
+    public ResponseEntity<BookResult> getAllBooks() {
         log.debug("Fallback called for getAllBooks");
-        Result<BookDTO> bookDTOResult = new Result<>();
+        BookResult bookDTOResult = new BookResult();
         bookDTOResult.setSuccess(false);
         bookDTOResult.setError("Server is down");
         return ResponseEntity.ok().body(bookDTOResult);
     }
 
     @Override
-    public ResponseEntity<Result<BookDTO>> getBookById(int id) {
+    public ResponseEntity<BookResult> getBookById(String id) {
         log.debug("Fallback called for getBookById");
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Result<BookDTO>> addBook(BookDTO book) {
+    public ResponseEntity<BookResult> addBook(BookDTO book) {
         log.debug("Fallback called for addBook");
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Result<BookDTO>> deleteBook(int id) {
+    public ResponseEntity<BookResult> deleteBook(String id) {
         log.debug("Fallback called for deleteBook");
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Result<BookDTO>> updateBook(int id, BookDTO bookDTO) {
+    public ResponseEntity<BookResult> updateBook(String id, BookDTO bookDTO) {
         log.debug("Fallback called for updateBook");
         return ResponseEntity.ok().build();
     }
