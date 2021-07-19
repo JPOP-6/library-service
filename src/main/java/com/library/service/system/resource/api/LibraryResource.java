@@ -3,6 +3,8 @@ package com.library.service.system.resource.api;
 import com.library.service.system.clients.Result;
 import com.library.service.system.clients.dto.BaseDTO;
 import com.library.service.system.clients.dto.UserDTO;
+import org.springframework.cloud.sleuth.annotation.NewSpan;
+import org.springframework.cloud.sleuth.annotation.SpanTag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +14,12 @@ public interface LibraryResource<T extends BaseDTO> {
     ResponseEntity<Result<T>> login(@PathVariable("user_id") int userId);
 
     @GetMapping("/books")
+    @NewSpan("getALLBooks")
     ResponseEntity<Result<T>> getAllBooks();
 
     @GetMapping("/books/{book_id}")
-    ResponseEntity<Result<T>> getBookDetails(@PathVariable("book_id") String bookId);
+    @NewSpan("getBookById")
+    ResponseEntity<Result<T>> getBookDetails(@SpanTag("book_id") @PathVariable("book_id") String bookId);
 
     @GetMapping("/users")
     ResponseEntity<Result<T>> getAllUsers();
